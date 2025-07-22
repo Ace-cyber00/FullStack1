@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import cors from "cors";
 import bodyParser  from "body-parser";
 
-import authRoutes from "../Backend/routes/auth.js";
+import authRoutes from "./routes/auth.js";
 
 config();
 

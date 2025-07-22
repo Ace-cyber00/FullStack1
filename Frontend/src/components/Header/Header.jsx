@@ -4,17 +4,17 @@ import { Link ,useNavigate} from 'react-router-dom'
 import { useState,useEffect } from 'react'
 
 const Header = () => {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    setIsLoggedIn(!!user); // true if user exists
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // true if token exists
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInUser"); // optional
     setIsLoggedIn(false);
     navigate("/login");
   };
