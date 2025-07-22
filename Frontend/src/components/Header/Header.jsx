@@ -1,15 +1,30 @@
 import React from 'react'
 import FullLogo from '../../assets/FullLogo.png'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
+import { useState,useEffect } from 'react'
 
 const Header = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedInUser");
+    setIsLoggedIn(!!user); // true if user exists
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
     
   return (
     <header className="bg-white">
   <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
     <div className="flex lg:flex-1">
-      <Link href="/" className="-m-1.5 p-1.5">
+      <Link to="/" className="-m-1.5 p-1.5">
         <span className="sr-only">Saiyaraa</span>
         <img src={FullLogo} alt="" className="h-30 w-auto" />
       </Link >
@@ -21,24 +36,32 @@ const Header = () => {
       </button>
     </div>
     <div className="hidden lg:flex lg:gap-x-12">
-      <div className="relative">
-        <button type="button" aria-expanded="false" className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-          Product
-          
-        </button>
-
-       
-        
-      </div>
-
-      <Link href="/collections" className="text-sm/6 font-semibold text-gray-900">Collection</Link >
-      <Link href="/contact" className="text-sm/6 font-semibold text-gray-900">Contact</Link >
-      <Link href="/about" className="text-sm/6 font-semibold text-gray-900">About Company</Link >
-      <Link href="/sell" className="text-sm/6 font-semibold text-gray-900">Sell</Link >
+     
+     <Link to="/collections" className="text-sm/6 font-semibold text-gray-900">Welcome</Link >
+      <Link to="/" className="text-sm/6 font-semibold text-gray-900">Products</Link >
+      
+      <Link to="/contacts" className="text-sm/6 font-semibold text-gray-900">Contact</Link >
+      <Link to="/about" className="text-sm/6 font-semibold text-gray-900">About Company</Link >
+      {isLoggedIn && 
+      (<Link to="/sell" className="text-sm/6 font-semibold text-gray-900">Sell</Link >)}
     </div>
-    <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-      <Link href="/login" className="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></Link >
-    </div>
+   <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+  {isLoggedIn ? (
+    <button
+      onClick={handleLogout}
+      className="text-sm/6 font-semibold text-gray-900 cursor-pointer"
+    >
+      Log out
+    </button>
+  ) : (
+    <Link
+      to="/login"
+      className="text-sm/6 font-semibold text-gray-900 cursor-pointer"
+    >
+      Log in <span aria-hidden="true">&rarr;</span>
+    </Link>
+  )}
+</div>
   </nav>
   {/* <!-- Mobile menu, show/hide based on menu open state. --> */}
   <div role="dialog" aria-modal="true" className="lg:hidden">
